@@ -6,37 +6,24 @@ import hiber.model.User;
 import hiber.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class MainApp {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
 
         UserService userService = context.getBean(UserService.class);
 
-//      Car car1 = new Car("BMW", 5, new User("User5", "Lastname5", "user5@mail.ru"));
-//      Car car2 = new Car("BMW", 6, new User("User6", "Lastname6", "user6@mail.ru"));
+        userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
+        userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
+        userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
+        userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
 
-//      userService.add(new Car("BMW", 5, new User("User5", "Lastname5", "user5@mail.ru")));
-//      userService.add(new Car("BMW", 6, new User("User6", "Lastname6", "user6@mail.ru")));
-
-        Car car1 = new Car("BMW", 5);
-        Car car2 = new Car("BMW", 6);
-
-
-//        userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-//        userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-//        userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-//        userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
-
-        userService.add(new User("User5", "Lastname5", "user5@mail.ru", car1));
-        userService.add(new User("User6", "Lastname6", "user6@mail.ru", car2));
-
-//      userService.add(new User("User5", "Lastname5", "user5@mail.ru", car1));
-//      userService.add(new User("User5", "Lastname5", "user5@mail.ru", car2));
-
+        userService.add(new User("User5", "Lastname5", "user5@mail.ru", new Car("BMW", 5)));
+        userService.add(new User("User6", "Lastname6", "user6@mail.ru", new Car("BMW", 6)));
+        userService.add(new User("User7", "Lastname7", "user7@mail.ru", new Car("BMW", 7)));
+        userService.add(new User("User8", "Lastname8", "user8@mail.ru", new Car("BMW", 8)));
 
         List<User> users = userService.listUsers();
         for (User user : users) {
@@ -44,11 +31,16 @@ public class MainApp {
             System.out.println("First Name = " + user.getFirstName());
             System.out.println("Last Name = " + user.getLastName());
             System.out.println("Email = " + user.getEmail());
-            System.out.println("Car Model = " + user.getModel());
-            System.out.println("Car Series = " + user.getSeries());
+            try {
+                System.out.println("Car Model = " + user.getCar().getModel());
+                System.out.println("Car Series = " + user.getCar().getSeries());
+            } catch (NullPointerException exp) {
+                System.out.println("Doesn't have a car");
+            }
             System.out.println();
         }
 
+        userService.getUserByModelAndSeries("BMW", 6);
         context.close();
     }
 }

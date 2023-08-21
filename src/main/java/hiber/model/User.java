@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User extends Car {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +19,20 @@ public class User extends Car {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumns({
-            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false),
-            @JoinColumn(name = "model", referencedColumnName = "model_car", insertable = false, updatable = false),
-            @JoinColumn(name = "series", referencedColumnName = "series_car", insertable = false, updatable = false)
+            @JoinColumn(name = "model", referencedColumnName = "model_car", updatable = false),
+            @JoinColumn(name = "series", referencedColumnName = "series_car", updatable = false)
     })
     private Car car;
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
     public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -73,14 +80,6 @@ public class User extends Car {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
     }
 
     @Override

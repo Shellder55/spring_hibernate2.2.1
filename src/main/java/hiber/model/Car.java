@@ -1,9 +1,11 @@
 package hiber.model;
 
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "cars")
+@Component
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +15,7 @@ public class Car {
     @Column(name = "series_car")
     private int series;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "car", fetch = FetchType.EAGER)
     private User user;
 
     public Car() {
