@@ -22,7 +22,7 @@ public class MainApp {
 
         userService.add(new User("User5", "Lastname5", "user5@mail.ru", new Car("BMW", 5)));
         userService.add(new User("User6", "Lastname6", "user6@mail.ru", new Car("BMW", 6)));
-        userService.add(new User("User7", "Lastname7", "user7@mail.ru", new Car("BMW", 7)));
+        userService.add(new User("User7", "Lastname7", "user7@mail.ru", new Car("BMW", 8)));
         userService.add(new User("User8", "Lastname8", "user8@mail.ru", new Car("BMW", 8)));
 
         List<User> users = userService.listUsers();
@@ -40,7 +40,7 @@ public class MainApp {
             System.out.println();
         }
 
-        userService.getUserByModelAndSeries("BMW", 6);
+        System.out.println(userService.getUserByModelAndSeries("BMW", 8));
         context.close();
     }
 }

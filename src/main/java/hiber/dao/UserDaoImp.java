@@ -4,7 +4,6 @@ import hiber.model.User;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,18 +22,29 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public void getUserByModelAndSeries(String model, int series) {
-        Query query = sessionFactory.getCurrentSession().createQuery("from User where car.model = :model and car.series = :series");
+    @SuppressWarnings("unchecked")
+    public List<User> getUserByModelAndSeries(String model, int series) {
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User where car.model = :model and car.series = :series");
         query.setParameter("model", model);
         query.setParameter("series", series);
-        System.out.println(query.getResultList());
+        return query.getResultList();
     }
+
+    ///////// Для EAGER
+
+//    @Override
+//    @SuppressWarnings("unchecked")
+//    public List<User> listUsers() {
+//        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("select u from User u");
+//        return query.getResultList();
+//    }
+
+    //////// Для LAZY
 
     @Override
     @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("select u from User u left join fetch u.car");
         return query.getResultList();
     }
-
 }

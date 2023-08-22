@@ -1,11 +1,11 @@
 package hiber.model;
 
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "cars")
-@Component
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class Car {
     @Column(name = "series_car")
     private int series;
 
-    @OneToOne(mappedBy = "car", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "car")
     private User user;
 
     public Car() {
@@ -57,5 +57,18 @@ public class Car {
                 ", model='" + model + '\'' +
                 ", series=" + series +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(id, car.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
